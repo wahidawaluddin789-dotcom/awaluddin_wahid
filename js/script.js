@@ -1,66 +1,95 @@
-// Simple store script: renders products and opens WhatsApp order link
-const OWNER_PHONE = '6281234567890'; // ganti dengan nomor Anda (format internasional, tanpa '+')
+const navToggle = document.querySelector('.nav-toggle');
+const navMenu = document.querySelector('.nav-menu');
+const buyButtons = document.querySelectorAll('.buy-btn');
+const packageInput = document.querySelector('#package');
+const priceInput = document.querySelector('#price');
+const quantityInput = document.querySelector('#quantity');
+const totalSpan = document.querySelector('#total');
+const orderForm = document.querySelector('#order-form');
 
-const products = [
-    { id: 'p1', name: 'Diamond 5', diamonds: 5, price: 5000 },
-    { id: 'p2', name: 'Diamond 50', diamonds: 50, price: 45000 },
-    { id: 'p3', name: 'Diamond 170', diamonds: 170, price: 140000 },
-    { id: 'p4', name: 'Diamond 360', diamonds: 360, price: 290000 },
-    { id: 'p5', name: 'Diamond 720', diamonds: 720, price: 560000 },
-];
+// Toggle mobile menu
+navToggle?.addEventListener('click', () => {
+    navMenu?.classList.toggle('open');
+});
 
-function formatRupiah(n){
-    return 'Rp ' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
+// Close menu when clicking outside
+window.addEventListener('click', event => {
+    if (!event.target.closest('.nav-menu') && !event.target.closest('.nav-toggle')) {
+        navMenu?.classList.remove('open');
+    }
+});
 
-function renderProducts(){
-    const list = document.getElementById('product-list');
-    if(!list) return;
-    list.innerHTML = '';
-    products.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<h4>${p.name} <span class="muted">(${p.diamonds} diamond)</span></h4>
-            <div class="price">${formatRupiah(p.price)}</div>
-            <div class="muted">Proses cepat, aman</div>
-            <a href="#" class="buy" data-id="${p.id}">Beli</a>`;
-        list.appendChild(card);
+// Smooth scroll for internal links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        navMenu?.classList.remove('open');
     });
+});
+
+// Update total price helper
+function updateTotal() {
+    const price = Number(priceInput?.value || 0);
+    const qty = Number(quantityInput?.value || 1);
+    const total = Math.max(0, price * qty);
+    if (totalSpan) totalSpan.textContent = total.toLocaleString('id-ID');
 }
 
-function initHandlers(){
-    const list = document.getElementById('product-list');
-    list?.addEventListener('click', e => {
-        if(e.target.matches('.buy')){
-            e.preventDefault();
-            const id = e.target.dataset.id;
-            const product = products.find(x=>x.id===id);
-            if(!product) return;
+// Handle buy buttons
+buyButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const pkg = button.dataset.package || '';
+        const price = button.dataset.price || '';
+        if (packageInput) packageInput.value = pkg;
+        if (priceInput) priceInput.value = price;
+        updateTotal();
+        const orderBox = document.querySelector('#order-box');
+        orderBox?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
 
-            const userId = prompt('Masukkan User ID Free Fire (opsional):','');
-            const server = prompt('Masukkan Server (opsional):','');
-            const qty = prompt('Jumlah paket (angka):','1');
-            const note = prompt('Catatan tambahan (opsional):','');
+// Recalculate when quantity changes
+quantityInput?.addEventListener('input', updateTotal);
 
-            const qtyNum = Math.max(1, parseInt(qty) || 1);
-            const total = product.price * qtyNum;
+// Form submission (simulated)
+orderForm?.addEventListener('submit', event => {
+    event.preventDefault();
+    const pkg = packageInput?.value.trim();
+    const game = document.querySelector('#game')?.value.trim();
+    const userId = document.querySelector('#userId')?.value.trim();
+    const userName = document.querySelector('#userName')?.value.trim();
+    const contact = document.querySelector('#contact')?.value.trim();
+    const price = Number(priceInput?.value || 0);
+    const qty = Number(quantityInput?.value || 1);
+    const total = price * qty;
 
-            const message = `Halo, saya mau pesan ${product.name} x${qtyNum} (${product.diamonds} diamond).\nUserID: ${userId || '-'}\nServer: ${server || '-'}\nTotal: ${formatRupiah(total)}\nCatatan: ${note || '-'}\nMohon proses pesanan.`;
+    if (!pkg || !game || !userId || !userName || !contact) {
+        alert('Silakan lengkapi semua data order sebelum mengirim.');
+        return;
+    }
 
-            const waUrl = `https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(message)}`;
-            window.open(waUrl, '_blank');
+    // Simulate order send
+    const order = {
+        game, userId, userName, contact, package: pkg, price, quantity: qty, total
+    };
+
+    alert('Order berhasil dikirim!\n' +
+        `Paket: ${order.package}\nID: ${order.userId}\nNama: ${order.userName}\nKontak: ${order.contact}\nTotal: Rp ${order.total.toLocaleString('id-ID')}`);
+    orderForm.reset();
+    if (priceInput) priceInput.value = '';
+    if (totalSpan) totalSpan.textContent = '0';
+});
+
+// Highlight nav links on scroll
+const sections = document.querySelectorAll('section');
+const navLinks = document.querySelectorAll('.nav-menu a');
+window.addEventListener('scroll', () => {
+    const scrollPosition = window.scrollY + 160;
+    sections.forEach(section => {
+        if (section.offsetTop <= scrollPosition && (section.offsetTop + section.offsetHeight) > scrollPosition) {
+            navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${section.id}`));
         }
     });
-
-    // set contact link
-    const waLink = document.getElementById('wa-link');
-    if(waLink){
-        waLink.href = `https://wa.me/${OWNER_PHONE}`;
-        waLink.target = '_blank';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', ()=>{
-    renderProducts();
-    initHandlers();
 });

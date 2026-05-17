@@ -1,58 +1,97 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Toko Diamond Free Fire</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
     <header class="site-header">
         <div class="container">
-            <h1 class="logo">Toko Diamond FF</h1>
-            <nav>
-                <a href="#products">Paket</a>
-                <a href="#how">Cara Beli</a>
-                <a href="#contact">Kontak</a>
+            <h1 class="logo">FF Diamond Store</h1>
+            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+            <nav class="nav-menu">
+                <a href="#home">Home</a>
+    <a href="#packages">Paket</a>
+    <a href="#order">Order</a>
+    <a href="#contact">Kontak</a>
             </nav>
         </div>
     </header>
-
-    <main class="container">
-        <section class="hero">
-            <h2>Beli Diamond Free Fire Aman & Cepat</h2>
-            <p>Pilih paket, masukkan ID pemain, dan bayar via WhatsApp.</p>
-            <a class="btn" href="#products">Lihat Paket</a>
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+    <h2>Beli Diamond Free Fire Cepat & Aman</h2>
+    <p>Pilih paket, isi data, dan kami kirim segera setelah pembayaran terkonfirmasi.</p>
+    <a class="btn" href="#packages">Lihat Paket</a>
+            </div>
         </section>
-
-        <section id="products">
-            <h3>Pilihan Paket Diamond</h3>
-            <div id="product-list" class="grid"></div>
+        <section id="packages" class="container section">
+            <h3>Paket Diamond</h3>
+            <div class="grid" id="packages-list">
+                <div class="card">
+          <h4>Diamond 5</h4>
+          <p class="price">Rp 5.000</p>
+          <button class="buy-btn" data-package="Diamond 5" data-price="5000">Beli</button>
+                </div>
+                <div class="card">
+                    <h4>Diamond 12</h4>
+                    <p class="price">Rp 12.000</p>
+                    <button class="buy-btn" data-package="Diamond 12" data-price="12000">Beli</button>
+                </div>
+                <div class="card">
+                    <h4>Diamond 50</h4>
+                    <p class="price">Rp 45.000</p>
+                    <button class="buy-btn" data-package="Diamond 50" data-price="45000">Beli</button>
+                </div>
+                <div class="card">
+          <h4>Diamond 100</h4>
+          <p class="price">Rp 85.000</p>
+          <button class="buy-btn" data-package="Diamond 100" data-price="85000">Beli</button>
+                </div>
+            </div>
         </section>
-
-        <section id="how">
-            <h3>Cara Pemesanan</h3>
-            <ol>
-                <li>Pilih paket diamond.</li>
-                <li>Masukkan User ID & Server (opsional).</li>
-                <li>Kirim pesanan via WhatsApp untuk konfirmasi dan pembayaran.</li>
-            </ol>
+        <section id="order" class="container section" aria-label="Form order">
+            <h3>Form Order</h3>
+            <div id="order-box">
+                <form id="order-form">
+                    <label>Game
+                        <select id="game">
+                            <option value="Free Fire">Free Fire</option>
+                        </select>
+                    </label>
+                    <label>ID Pemain
+                        <input id="userId" type="text" placeholder="Masukkan ID/UID" required>
+                    </label>
+                    <label>Nama Pemain
+                        <input id="userName" type="text" placeholder="Nama" required>
+                    </label>
+                    <label>Kontak (WA)
+                        <input id="contact" type="text" placeholder="08xxxxxxxx" required>
+                    </label>
+                    <label>Paket
+                        <input id="package" name="package" type="text" placeholder="Pilih paket dari daftar" required readonly>
+                    </label>
+                    <label>Harga (Rp)
+                        <input id="price" type="number" readonly>
+                    </label>
+                    <label>Jumlah
+                        <input id="quantity" type="number" min="1" value="1">
+                    </label>
+                    <p><strong>Total: Rp <span id="total">0</span></strong></p>
+                    <button class="btn primary" type="submit">Kirim Order</button>
+                </form>
+            </div>
         </section>
-
-        <section id="contact">
+        <section id="contact" class="container section">
             <h3>Kontak</h3>
-            <p>Hubungi kami via WhatsApp untuk memesan:</p>
-            <p><a id="wa-link" href="#">Chat WhatsApp</a></p>
+            <p>Hubungi via WhatsApp: <a href="https://wa.me/628000000000">628000000000</a></p>
         </section>
     </main>
-
     <footer class="site-footer">
-        <div class="container">© 2026 Toko Diamond FF — Semua hak dilindungi.</div>
+        <div class="container">© 2026 FF Diamond Store</div>
     </footer>
-
     <script src="js/script.js"></script>
-</body>
-</html>
+    </body>
+    </html>
 <!DOCTYPE html>
 <html lang="id">
 <head>
